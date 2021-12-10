@@ -6,5 +6,6 @@ dependencyResolutionManagement {
         jcenter() // Warning: this repository is going to shut down soon
     }
 }
+include(":app")
 rootProject.name = "AIVioceApp"
-include ':app'
+rootProject.buildFileName = "build.gradle.kts"
