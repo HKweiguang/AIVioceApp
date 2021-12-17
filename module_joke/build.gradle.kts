@@ -1,6 +1,11 @@
 plugins {
-    id("com.android.library")
+    if (ModuleConfig.isApp) {
+        id("com.android.application")
+    } else {
+        id("com.android.library")
+    }
     kotlin("android")
+    kotlin("kapt")
 }
 
 android {
@@ -8,10 +13,25 @@ android {
     buildToolsVersion = AppConfig.buildToolsVersion
 
     defaultConfig {
+        if (ModuleConfig.isApp) {
+            if (this is com.android.build.api.dsl.ApplicationDefaultConfig) {
+                applicationId = ModuleConfig.MODULE_JOKE
+                versionCode = AppConfig.versionCode
+                versionName = AppConfig.versionName
+            }
+        }
         minSdk = AppConfig.minSdk
         targetSdk = AppConfig.targetSdk
 
-        consumerProguardFile("consumer-rules.pro")
+        if (this is com.android.build.api.dsl.LibraryDefaultConfig)
+            consumerProguardFiles("consumer-rules.pro")
+
+        // ARouter
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.name)
+            }
+        }
     }
 
     buildTypes {
@@ -33,10 +53,23 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    // 动态替换资源
+    sourceSets {
+        getByName("main") {
+            if (ModuleConfig.isApp) {
+                manifest.srcFile("src/main/manifest/AndroidManifest.xml")
+            } else {
+                manifest.srcFile("src/main/AndroidManifest.xml")
+            }
+        }
+    }
 }
 
 dependencies {
-    implementation(dependenciesConfig.CORE_KTX)
-    implementation(dependenciesConfig.APPCOMPAT)
-    implementation(dependenciesConfig.MATERIAL)
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+
+    implementation(project(":lib_base"))
+
+    kapt(dependenciesConfig.AROUTER_COMPILER)
 }

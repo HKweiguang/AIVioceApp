@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     kotlin("android")
+    kotlin("kapt")
 }
 
 android {
@@ -10,6 +11,13 @@ android {
     defaultConfig {
         minSdk = AppConfig.minSdk
         targetSdk = AppConfig.targetSdk
+
+        // ARouter
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.name)
+            }
+        }
 
         consumerProguardFile("consumer-rules.pro")
     }
@@ -36,7 +44,18 @@ android {
 }
 
 dependencies {
-    implementation(dependenciesConfig.CORE_KTX)
-    implementation(dependenciesConfig.APPCOMPAT)
-    implementation(dependenciesConfig.MATERIAL)
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+
+    api(dependenciesConfig.CORE_KTX)
+    api(dependenciesConfig.APPCOMPAT)
+    api(dependenciesConfig.MATERIAL)
+    api(dependenciesConfig.CONSTRAINTLAYOUT)
+
+    api(dependenciesConfig.EVENTBUS)
+
+    api(dependenciesConfig.AROUTER)
+    kapt(dependenciesConfig.AROUTER_COMPILER)
+
+    api(project(":lib_network"))
+    api(project(":lib_voice"))
 }

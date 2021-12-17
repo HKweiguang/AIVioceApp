@@ -36,7 +36,5 @@ android {
 }
 
 dependencies {
-    implementation(dependenciesConfig.CORE_KTX)
-    implementation(dependenciesConfig.APPCOMPAT)
-    implementation(dependenciesConfig.MATERIAL)
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 }

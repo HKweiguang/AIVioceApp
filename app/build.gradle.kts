@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    kotlin("kapt")
 }
 
 android {
@@ -13,6 +14,13 @@ android {
         targetSdk = AppConfig.targetSdk
         versionCode = AppConfig.versionCode
         versionName = AppConfig.versionName
+
+        // ARouter
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.name)
+            }
+        }
     }
 
     // 签名配置
@@ -52,7 +60,7 @@ android {
         val buildType = this.buildType.name
         outputs.all {
             // 输出APK
-            if(this is com.android.build.gradle.internal.api.ApkVariantOutputImpl) {
+            if (this is com.android.build.gradle.internal.api.ApkVariantOutputImpl) {
                 if (buildType == "release") {
                     this.outputFileName = "AI_V${defaultConfig.versionName}_$buildType.apk"
                 }
@@ -74,8 +82,18 @@ android {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
-    implementation(dependenciesConfig.CORE_KTX)
-    implementation(dependenciesConfig.APPCOMPAT)
-    implementation(dependenciesConfig.MATERIAL)
-    implementation(dependenciesConfig.CONSTRAINTLAYOUT)
+    implementation(project(":lib_base"))
+
+    if (!ModuleConfig.isApp) {
+        implementation(project(":module_app_manager"))
+        implementation(project(":module_constellation"))
+        implementation(project(":module_developer"))
+        implementation(project(":module_joke"))
+        implementation(project(":module_map"))
+        implementation(project(":module_setting"))
+        implementation(project(":module_voice_setting"))
+        implementation(project(":module_weather"))
+    }
+
+    kapt(dependenciesConfig.AROUTER_COMPILER)
 }
