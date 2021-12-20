@@ -3,9 +3,10 @@
     package="com.shimmer.module_weather">
 
     <application
+        android:name="com.shimmer.lib_base.base.BaseApp"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="@string/app_title_weather"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AIVioceApp">

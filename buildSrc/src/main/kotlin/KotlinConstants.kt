@@ -27,7 +27,7 @@ object dependenciesConfig {
 
 object ModuleConfig {
 
-    const val isApp = false
+    const val isApp = true
 
     const val MODULE_APP_MANAGER = "com.shimmer.module_app_manager"
     const val MODULE_CONSTELLATION = "com.shimmer.module_constellation"
