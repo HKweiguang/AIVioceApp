@@ -9,7 +9,7 @@ object AppConfig {
     const val compileSdk = 31
     const val buildToolsVersion = "31.0.0"
     const val applicationId = "com.shimmer.aivioceapp"
-    const val minSdk = 19
+    const val minSdk = 21
     const val targetSdk = 31
     const val versionCode = 1
     const val versionName = "1.0"
@@ -27,7 +27,7 @@ object dependenciesConfig {
 
 object ModuleConfig {
 
-    const val isApp = true
+    const val isApp = false
 
     const val MODULE_APP_MANAGER = "com.shimmer.module_app_manager"
     const val MODULE_CONSTELLATION = "com.shimmer.module_constellation"

@@ -15,6 +15,13 @@ android {
         versionCode = AppConfig.versionCode
         versionName = AppConfig.versionName
 
+        ndk {
+            abiFilters.apply {
+                add("arm64-v8a")
+                add("armeabi-v7a")
+            }
+        }
+
         // ARouter
         kapt {
             arguments {
@@ -40,13 +47,15 @@ android {
     // 编译类型
     buildTypes {
         getByName("debug") {
-
+            // 自动签名打包
+            signingConfig = signingConfigs.getByName("release")
         }
         getByName("release") {
             // 自动签名打包
             signingConfig = signingConfigs.getByName("release")
 
-            isMinifyEnabled = false
+            isShrinkResources = true
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

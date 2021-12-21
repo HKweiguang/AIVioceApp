@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">小爱同学</string>
+    <string name="app_name">AI语音助手</string>
 
     <!--标题-->
     <string name="app_title_app_manager">应用管理</string>

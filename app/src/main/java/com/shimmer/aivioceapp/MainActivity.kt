@@ -1,5 +1,6 @@
 package com.shimmer.aivioceapp
 
+import android.content.Intent
 import com.shimmer.lib_base.base.BaseActivity
 
 class MainActivity : BaseActivity() {
@@ -11,5 +12,6 @@ class MainActivity : BaseActivity() {
     override fun isShowBack() = false
 
     override fun initView() {
+        startService(Intent(this, VoiceService::class.java))
     }
 }

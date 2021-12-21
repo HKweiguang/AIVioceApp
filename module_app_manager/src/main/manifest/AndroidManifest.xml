@@ -3,7 +3,7 @@
     package="com.shimmer.module_app_manager">
 
     <application
-        android:name="com.shimmer.lib_base.base.BaseApp"
+        android:name=".base.AppManagerApp"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_title_app_manager"
