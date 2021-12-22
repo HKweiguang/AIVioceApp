@@ -6,6 +6,7 @@ import com.shimmer.lib_base.helper.ARouterHelper
 import com.shimmer.lib_base.helper.NotificationHelper
 import com.shimmer.lib_base.service.InitService
 import com.shimmer.lib_base.utils.SpUtils
+import com.shimmer.lib_voice.manager.VoiceManager
 
 open class BaseApp : Application() {
 
@@ -14,6 +15,7 @@ open class BaseApp : Application() {
 
         ARouterHelper.initHelper(this)
         NotificationHelper.initHelper(this)
+        VoiceManager.initManager(this)
         startService(Intent(this, InitService::class.java))
     }
 }

@@ -8,6 +8,8 @@ import com.shimmer.lib_base.base.BaseActivity
 import com.shimmer.lib_base.base.adapter.CommonAdapter
 import com.shimmer.lib_base.base.adapter.CommonViewHolder
 import com.shimmer.lib_base.helper.ARouterHelper
+import com.shimmer.lib_voice.manager.VoiceManager
+import com.shimmer.lib_voice.tts.VoiceTTS
 import com.shimmer.module_developer.data.DeveloperListData
 
 @Route(path = ARouterHelper.PATH_DEVELOPER)
@@ -100,6 +102,16 @@ class DeveloperActivity : BaseActivity() {
             5 -> ARouterHelper.startActivity(ARouterHelper.PATH_SETTING)
             6 -> ARouterHelper.startActivity(ARouterHelper.PATH_VOICE_SETTING)
             7 -> ARouterHelper.startActivity(ARouterHelper.PATH_WEATHER)
+
+            20 -> VoiceManager.ttsStart("你好", object : VoiceTTS.OnTTSResultListener{
+                override fun ttsEnd() {
+
+                }
+            })
+            21 -> VoiceManager.ttsPause()
+            22 -> VoiceManager.ttsResume()
+            23 -> VoiceManager.ttsStop()
+            24 -> VoiceManager.ttsRelease()
         }
     }
 }
