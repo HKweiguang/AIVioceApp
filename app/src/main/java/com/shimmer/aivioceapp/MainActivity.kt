@@ -2,6 +2,9 @@ package com.shimmer.aivioceapp
 
 import android.content.Intent
 import com.shimmer.lib_base.base.BaseActivity
+import com.shimmer.lib_base.helper.ARouterHelper
+import com.yanzhenjie.permission.AndPermission
+import com.yanzhenjie.permission.runtime.Permission
 
 class MainActivity : BaseActivity() {
 
@@ -13,5 +16,11 @@ class MainActivity : BaseActivity() {
 
     override fun initView() {
         startService(Intent(this, VoiceService::class.java))
+
+        AndPermission.with(this)
+            .runtime()
+            .permission(Permission.RECORD_AUDIO)
+            .onGranted { permissions -> ARouterHelper.startActivity(ARouterHelper.PATH_DEVELOPER)}
+            .start()
     }
 }

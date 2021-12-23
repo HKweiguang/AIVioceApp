@@ -1,9 +1,15 @@
 package com.shimmer.lib_voice.manager
 
 import android.content.Context
+import android.util.Log
+import com.baidu.speech.EventListener
+import com.baidu.speech.asr.SpeechConstant
 import com.shimmer.lib_voice.tts.VoiceTTS
+import com.shimmer.lib_voice.wakeup.VoiceWakeUp
 
-object VoiceManager {
+object VoiceManager : EventListener {
+
+    private val TAG = VoiceManager::class.java.simpleName
 
     internal const val VOICE_APP_ID = "25379774"
     internal const val VOICE_APP_KEY = "okUD6VXFkLVWITfWRYPTiyfC"
@@ -11,7 +17,10 @@ object VoiceManager {
 
     fun initManager(mContext: Context) {
         VoiceTTS.initTTS(mContext)
+        VoiceWakeUp.initWakeUp(mContext, this)
     }
+
+    // TTS start------------------------------------------------------------------------------------
 
     /**
      * 播放
@@ -72,4 +81,36 @@ object VoiceManager {
     fun setVoiceVolume(volume: String) {
         VoiceTTS.setPeople(volume)
     }
+
+    // TTS end--------------------------------------------------------------------------------------
+
+    // WakeUp start---------------------------------------------------------------------------------
+
+    /**
+     * 启动唤醒
+     */
+    fun startWakeUp() {
+        Log.i(TAG, "启动唤醒")
+        VoiceWakeUp.startWakeUp()
+    }
+
+    /**
+     * 停止唤醒
+     */
+    fun stopWakeUp() {
+        Log.i(TAG, "停止唤醒")
+        VoiceWakeUp.stopWakeUp()
+    }
+
+    override fun onEvent(name: String?, params: String?, data: ByteArray?, offset: Int, length: Int) {
+        Log.i(TAG, "event: name=$name, params=$params")
+
+        name?.let {
+            when (it) {
+                SpeechConstant.CALLBACK_EVENT_WAKEUP_SUCCESS -> ttsStart("我在")
+            }
+        }
+    }
+
+    // WakeUp end-----------------------------------------------------------------------------------
 }

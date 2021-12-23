@@ -23,11 +23,12 @@ object dependenciesConfig {
     const val EVENTBUS = "org.greenrobot:eventbus:3.3.1"
     const val AROUTER = "com.alibaba:arouter-api:1.5.2"
     const val AROUTER_COMPILER = "com.alibaba:arouter-compiler:1.5.2"
+    const val PERMISSION = "com.yanzhenjie:permission:2.0.3"
 }
 
 object ModuleConfig {
 
-    const val isApp = true
+    const val isApp = false
 
     const val MODULE_APP_MANAGER = "com.shimmer.module_app_manager"
     const val MODULE_CONSTELLATION = "com.shimmer.module_constellation"

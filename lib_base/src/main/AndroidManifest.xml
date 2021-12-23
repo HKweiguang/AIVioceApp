@@ -13,12 +13,25 @@
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application>
 
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
+
+        <meta-data
+            android:name="com.baidu.speech.APP_ID"
+            android:value="25379774" />
+
+        <meta-data
+            android:name="com.baidu.speech.API_KEY"
+            android:value="okUD6VXFkLVWITfWRYPTiyfC" />
+
+        <meta-data
+            android:name="com.baidu.speech.SECRET_KEY"
+            android:value="XB9EyrwdwI1nrtGCSiCErALpGYsjuhHr" />
 
         <service android:name=".service.InitService" />
     </application>

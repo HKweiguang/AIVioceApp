@@ -11,6 +11,8 @@ import com.shimmer.lib_base.helper.ARouterHelper
 import com.shimmer.lib_voice.manager.VoiceManager
 import com.shimmer.lib_voice.tts.VoiceTTS
 import com.shimmer.module_developer.data.DeveloperListData
+import com.yanzhenjie.permission.AndPermission
+import com.yanzhenjie.permission.runtime.Permission
 
 @Route(path = ARouterHelper.PATH_DEVELOPER)
 class DeveloperActivity : BaseActivity() {
@@ -32,6 +34,12 @@ class DeveloperActivity : BaseActivity() {
     private val mList = arrayListOf<DeveloperListData>()
 
     override fun initView() {
+
+        AndPermission.with(this)
+            .runtime()
+            .permission(Permission.RECORD_AUDIO)
+            .start()
+
         initData()
         initListView()
     }
@@ -103,7 +111,10 @@ class DeveloperActivity : BaseActivity() {
             6 -> ARouterHelper.startActivity(ARouterHelper.PATH_VOICE_SETTING)
             7 -> ARouterHelper.startActivity(ARouterHelper.PATH_WEATHER)
 
-            20 -> VoiceManager.ttsStart("你好", object : VoiceTTS.OnTTSResultListener{
+            14 -> VoiceManager.startWakeUp()
+            15 -> VoiceManager.stopWakeUp()
+
+            20 -> VoiceManager.ttsStart("你好", object : VoiceTTS.OnTTSResultListener {
                 override fun ttsEnd() {
 
                 }

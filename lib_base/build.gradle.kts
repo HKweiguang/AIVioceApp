@@ -46,6 +46,9 @@ android {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
+    api(project(":lib_network"))
+    api(project(":lib_voice"))
+
     api(dependenciesConfig.CORE_KTX)
     api(dependenciesConfig.APPCOMPAT)
     api(dependenciesConfig.MATERIAL)
@@ -56,6 +59,5 @@ dependencies {
     api(dependenciesConfig.AROUTER)
     kapt(dependenciesConfig.AROUTER_COMPILER)
 
-    api(project(":lib_network"))
-    api(project(":lib_voice"))
+    api(dependenciesConfig.PERMISSION)
 }
