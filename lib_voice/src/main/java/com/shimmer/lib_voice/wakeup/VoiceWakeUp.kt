@@ -26,6 +26,8 @@ object VoiceWakeUp {
         // 设置监听器
         wp = EventManagerFactory.create(mContext, "wp")
         wp.registerListener(listener)
+
+        startWakeUp()
     }
 
     /**

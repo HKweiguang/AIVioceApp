@@ -15,7 +15,6 @@ open class BaseApp : Application() {
 
         ARouterHelper.initHelper(this)
         NotificationHelper.initHelper(this)
-        VoiceManager.initManager(this)
         startService(Intent(this, InitService::class.java))
     }
 }

@@ -4,8 +4,11 @@ import android.content.Context
 import android.util.Log
 import com.baidu.speech.EventListener
 import com.baidu.speech.asr.SpeechConstant
+import com.shimmer.lib_voice.asr.VoiceAsr
+import com.shimmer.lib_voice.impl.OnAsrResultListener
 import com.shimmer.lib_voice.tts.VoiceTTS
 import com.shimmer.lib_voice.wakeup.VoiceWakeUp
+import org.json.JSONObject
 
 object VoiceManager : EventListener {
 
@@ -15,9 +18,14 @@ object VoiceManager : EventListener {
     internal const val VOICE_APP_KEY = "okUD6VXFkLVWITfWRYPTiyfC"
     internal const val VOICE_APP_SECRET = "XB9EyrwdwI1nrtGCSiCErALpGYsjuhHr"
 
-    fun initManager(mContext: Context) {
+    private lateinit var onAsrResultListener: OnAsrResultListener
+
+    fun initManager(mContext: Context, onAsrResultListener: OnAsrResultListener) {
+        this.onAsrResultListener = onAsrResultListener
+
         VoiceTTS.initTTS(mContext)
         VoiceWakeUp.initWakeUp(mContext, this)
+        VoiceAsr.initAsr(mContext, this)
     }
 
     // TTS start------------------------------------------------------------------------------------
@@ -102,15 +110,68 @@ object VoiceManager : EventListener {
         VoiceWakeUp.stopWakeUp()
     }
 
+    // WakeUp end-----------------------------------------------------------------------------------
+
+    // ASR start------------------------------------------------------------------------------------
+
+    /**
+     * 开始识别
+     */
+    fun startAsr() {
+        VoiceAsr.startAsr()
+    }
+
+    /**
+     * 停止识别
+     */
+    fun stopAsr() {
+        VoiceAsr.stopAsr()
+    }
+
+    /**
+     * 取消识别
+     */
+    fun cancelAsr() {
+        VoiceAsr.cancelAsr()
+    }
+
+    /**
+     * 销毁
+     */
+    fun releaseAsr() {
+        VoiceAsr.releaseAsr(this)
+    }
+
+    // ASR end--------------------------------------------------------------------------------------
+
+
     override fun onEvent(name: String?, params: String?, data: ByteArray?, offset: Int, length: Int) {
         Log.i(TAG, "event: name=$name, params=$params")
 
-        name?.let {
-            when (it) {
-                SpeechConstant.CALLBACK_EVENT_WAKEUP_SUCCESS -> ttsStart("我在")
+        name?.also {
+            // 语音前置状态
+            when (name) {
+                SpeechConstant.CALLBACK_EVENT_WAKEUP_READY -> onAsrResultListener.wakeUpReady()
+                SpeechConstant.CALLBACK_EVENT_ASR_BEGIN -> onAsrResultListener.asrStartSpeak()
+                SpeechConstant.CALLBACK_EVENT_ASR_END -> onAsrResultListener.asrStopSpeak()
+            }
+            // 去除脏数据
+            if (params == null) {
+                return
+            }
+
+            val allJson = JSONObject(params)
+
+            when (name) {
+                SpeechConstant.CALLBACK_EVENT_WAKEUP_SUCCESS -> onAsrResultListener.wakeUpSuccess(allJson)
+                SpeechConstant.CALLBACK_EVENT_WAKEUP_ERROR -> onAsrResultListener.voiceError("唤醒失败")
+                SpeechConstant.CALLBACK_EVENT_ASR_PARTIAL -> {
+                    data?.also { data ->
+                        val nlu = String(data, offset, length)
+                        onAsrResultListener.asrResult(allJson, nlu)
+                    }
+                }
             }
         }
     }
-
-    // WakeUp end-----------------------------------------------------------------------------------
 }

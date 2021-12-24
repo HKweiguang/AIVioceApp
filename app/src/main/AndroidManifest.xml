@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".VoiceService" />
+        <service android:name=".service.VoiceService" />
     </application>
 
 </manifest>
