@@ -6,6 +6,7 @@ import android.app.IntentService
 import android.content.Intent
 import com.shimmer.lib_base.utils.L
 import com.shimmer.lib_base.utils.SpUtils
+import com.shimmer.lib_voice.words.WordsTools
 
 class InitService : IntentService(InitService::class.java.simpleName) {
 
@@ -18,6 +19,7 @@ class InitService : IntentService(InitService::class.java.simpleName) {
         L.i("初始化")
 
         SpUtils.initUtils(this)
+        WordsTools.initTools(this)
     }
 
     override fun onDestroy() {

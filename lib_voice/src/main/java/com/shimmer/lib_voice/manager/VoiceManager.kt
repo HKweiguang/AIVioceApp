@@ -145,7 +145,13 @@ object VoiceManager : EventListener {
     // ASR end--------------------------------------------------------------------------------------
 
 
-    override fun onEvent(name: String?, params: String?, data: ByteArray?, offset: Int, length: Int) {
+    override fun onEvent(
+        name: String?,
+        params: String?,
+        data: ByteArray?,
+        offset: Int,
+        length: Int
+    ) {
         Log.i(TAG, "event: name=$name, params=$params")
 
         name?.also {
@@ -163,12 +169,15 @@ object VoiceManager : EventListener {
             val allJson = JSONObject(params)
 
             when (name) {
-                SpeechConstant.CALLBACK_EVENT_WAKEUP_SUCCESS -> onAsrResultListener.wakeUpSuccess(allJson)
+                SpeechConstant.CALLBACK_EVENT_WAKEUP_SUCCESS -> onAsrResultListener.wakeUpSuccess(
+                    allJson
+                )
                 SpeechConstant.CALLBACK_EVENT_WAKEUP_ERROR -> onAsrResultListener.voiceError("唤醒失败")
+                SpeechConstant.CALLBACK_EVENT_ASR_FINISH -> onAsrResultListener.asrResult(allJson)
                 SpeechConstant.CALLBACK_EVENT_ASR_PARTIAL -> {
                     data?.also { data ->
-                        val nlu = String(data, offset, length)
-                        onAsrResultListener.asrResult(allJson, nlu)
+                        val nlu = JSONObject(String(data, offset, length))
+                        onAsrResultListener.nluResult(nlu)
                     }
                 }
             }

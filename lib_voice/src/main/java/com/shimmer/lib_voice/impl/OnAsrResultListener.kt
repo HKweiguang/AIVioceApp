@@ -17,7 +17,9 @@ interface OnAsrResultListener {
     fun wakeUpSuccess(result: JSONObject)
 
     // 在线识别结果
-    fun asrResult(result: JSONObject, nlu: String)
+    fun asrResult(result: JSONObject)
+
+    fun nluResult(nlu: JSONObject)
 
     // 错误
     fun voiceError(text: String)

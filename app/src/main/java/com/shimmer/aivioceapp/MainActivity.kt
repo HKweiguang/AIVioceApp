@@ -21,7 +21,7 @@ class MainActivity : BaseActivity() {
         AndPermission.with(this)
             .runtime()
             .permission(Permission.RECORD_AUDIO)
-            .onGranted { permissions -> ARouterHelper.startActivity(ARouterHelper.PATH_DEVELOPER)}
+            .onGranted { ARouterHelper.startActivity(ARouterHelper.PATH_DEVELOPER)}
             .start()
     }
 }
