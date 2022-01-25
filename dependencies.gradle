@@ -1,0 +1,21 @@
+ext {
+    build_gradle = "com.android.tools.build:gradle:7.0.4"
+    kotlin_gradle_plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
+
+    core_ktx = "androidx.core:core-ktx:1.7.0"
+    appcompat = "androidx.appcompat:appcompat:1.4.0"
+    material = "com.google.android.material:material:1.4.0"
+    constraintlayout = "androidx.constraintlayout:constraintlayout:2.1.2"
+
+    eventbus = "org.greenrobot:eventbus:3.3.1"
+    arouter = "com.alibaba:arouter-api:1.5.2"
+    arouter_compiler = "com.alibaba:arouter-compiler:1.5.2"
+    permission = "com.yanzhenjie:permission:2.0.3"
+    retrofit2 = "com.squareup.retrofit2:retrofit:2.8.1"
+    retrofit2_gson = "com.squareup.retrofit2:converter-gson:2.8.1"
+    lottie = "com.airbnb.android:lottie:3.4.0"
+
+
+
+}
+

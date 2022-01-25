@@ -60,4 +60,7 @@ dependencies {
     kapt(dependenciesConfig.AROUTER_COMPILER)
 
     api(dependenciesConfig.PERMISSION)
+
+    api(dependenciesConfig.RETROFIT)
+    api(dependenciesConfig.RETROFIT_GSON)
 }

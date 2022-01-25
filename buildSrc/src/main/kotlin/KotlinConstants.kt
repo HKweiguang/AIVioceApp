@@ -2,7 +2,7 @@ object KotlinConstants {
     // Gradle 版本
     const val gradle_version = "7.0.4"
     // Kotlin 版本
-    const val kotlin_version = "1.6.0"
+    const val kotlin_version = "1.6.10"
 }
 
 object AppConfig {
@@ -16,14 +16,35 @@ object AppConfig {
 }
 
 object dependenciesConfig {
-    const val CORE_KTX = "androidx.core:core-ktx:1.3.2"
-    const val APPCOMPAT = "androidx.appcompat:appcompat:1.2.0"
-    const val MATERIAL = "com.google.android.material:material:1.3.0"
-    const val CONSTRAINTLAYOUT = "androidx.constraintlayout:constraintlayout:2.0.4"
+    const val CORE_KTX = "androidx.core:core-ktx:1.7.0"
+    const val APPCOMPAT = "androidx.appcompat:appcompat:1.4.0"
+    const val MATERIAL = "com.google.android.material:material:1.4.0"
+    const val CONSTRAINTLAYOUT = "androidx.constraintlayout:constraintlayout:2.1.2"
+
+    //EventBus
     const val EVENTBUS = "org.greenrobot:eventbus:3.3.1"
+
+    //ARouter
     const val AROUTER = "com.alibaba:arouter-api:1.5.2"
     const val AROUTER_COMPILER = "com.alibaba:arouter-compiler:1.5.2"
+
+    //Permissions
     const val PERMISSION = "com.yanzhenjie:permission:2.0.3"
+
+    //Retrofit
+    const val RETROFIT = "com.squareup.retrofit2:retrofit:2.8.1"
+    const val RETROFIT_GSON = "com.squareup.retrofit2:converter-gson:2.8.1"
+
+    //Lottie
+    const val LOTTIE = "com.airbnb.android:lottie:3.4.0"
+
+    //刷新
+    const val REFRESH_KERNEL = "com.scwang.smart:refresh-layout-kernel:2.0.1"
+    const val REFRESH_HEADER = "com.scwang.smart:refresh-header-classics:2.0.1"
+    const val REFRESH_FOOT = "com.scwang.smart:refresh-footer-classics:2.0.1"
+
+    //图表
+    const val CHART = "com.github.PhilJay:MPAndroidChart:v3.1.0"
 }
 
 object ModuleConfig {
