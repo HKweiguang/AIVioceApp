@@ -15,7 +15,7 @@ object AppConfig {
     const val versionName = "1.0"
 }
 
-object dependenciesConfig {
+object DependenciesConfig {
     const val CORE_KTX = "androidx.core:core-ktx:1.7.0"
     const val APPCOMPAT = "androidx.appcompat:appcompat:1.4.0"
     const val MATERIAL = "com.google.android.material:material:1.4.0"
@@ -34,6 +34,9 @@ object dependenciesConfig {
     //Retrofit
     const val RETROFIT = "com.squareup.retrofit2:retrofit:2.8.1"
     const val RETROFIT_GSON = "com.squareup.retrofit2:converter-gson:2.8.1"
+
+    //ViewPager
+    const val VIEWPAGER = "com.zhy:magic-viewpager:1.0.1"
 
     //Lottie
     const val LOTTIE = "com.airbnb.android:lottie:3.4.0"

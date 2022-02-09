@@ -29,8 +29,8 @@ object ARouterHelper {
         ARouter.getInstance().build(path).navigation()
     }
 
-    fun startActivity(path: String, activity: Activity, reqquestCode: Int) {
-        ARouter.getInstance().build(path).navigation(activity, reqquestCode)
+    fun startActivity(path: String, activity: Activity, requestCode: Int) {
+        ARouter.getInstance().build(path).navigation(activity, requestCode)
     }
 
     fun startActivity(path: String, key: String, value: String) {

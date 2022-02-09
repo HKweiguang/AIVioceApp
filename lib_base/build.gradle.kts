@@ -49,18 +49,22 @@ dependencies {
     api(project(":lib_network"))
     api(project(":lib_voice"))
 
-    api(dependenciesConfig.CORE_KTX)
-    api(dependenciesConfig.APPCOMPAT)
-    api(dependenciesConfig.MATERIAL)
-    api(dependenciesConfig.CONSTRAINTLAYOUT)
+    api(DependenciesConfig.CORE_KTX)
+    api(DependenciesConfig.APPCOMPAT)
+    api(DependenciesConfig.MATERIAL)
+    api(DependenciesConfig.CONSTRAINTLAYOUT)
 
-    api(dependenciesConfig.EVENTBUS)
+    api(DependenciesConfig.EVENTBUS)
 
-    api(dependenciesConfig.AROUTER)
-    kapt(dependenciesConfig.AROUTER_COMPILER)
+    api(DependenciesConfig.AROUTER)
+    kapt(DependenciesConfig.AROUTER_COMPILER)
 
-    api(dependenciesConfig.PERMISSION)
+    api(DependenciesConfig.PERMISSION)
 
-    api(dependenciesConfig.RETROFIT)
-    api(dependenciesConfig.RETROFIT_GSON)
+    api(DependenciesConfig.RETROFIT)
+    api(DependenciesConfig.RETROFIT_GSON)
+
+    api(DependenciesConfig.VIEWPAGER)
+    //Lottie
+    api(DependenciesConfig.LOTTIE)
 }

@@ -104,5 +104,5 @@ dependencies {
         implementation(project(":module_weather"))
     }
 
-    kapt(dependenciesConfig.AROUTER_COMPILER)
+    kapt(DependenciesConfig.AROUTER_COMPILER)
 }

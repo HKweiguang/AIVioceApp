@@ -16,6 +16,9 @@ interface OnAsrResultListener {
     // 唤醒成功
     fun wakeUpSuccess(result: JSONObject)
 
+    // 更新话术
+    fun updateUserText(text: String)
+
     // 在线识别结果
     fun asrResult(result: JSONObject)
 

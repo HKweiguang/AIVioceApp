@@ -8,6 +8,7 @@ import com.shimmer.lib_base.utils.L
 import com.shimmer.lib_base.utils.SpUtils
 import com.shimmer.lib_voice.words.WordsTools
 
+
 class InitService : IntentService(InitService::class.java.simpleName) {
 
     override fun onCreate() {

@@ -3,7 +3,7 @@ package com.shimmer.lib_base.base.adapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class CommonAdapter<T> : RecyclerView.Adapter<CommonViewHolder> {
+open class CommonAdapter<T> : RecyclerView.Adapter<CommonViewHolder> {
 
     private var mList: List<T>
 

@@ -175,6 +175,7 @@ object VoiceManager : EventListener {
                 SpeechConstant.CALLBACK_EVENT_WAKEUP_ERROR -> onAsrResultListener.voiceError("唤醒失败")
                 SpeechConstant.CALLBACK_EVENT_ASR_FINISH -> onAsrResultListener.asrResult(allJson)
                 SpeechConstant.CALLBACK_EVENT_ASR_PARTIAL -> {
+                    onAsrResultListener.updateUserText(allJson.optString("best_result"))
                     data?.also { data ->
                         val nlu = JSONObject(String(data, offset, length))
                         onAsrResultListener.nluResult(nlu)

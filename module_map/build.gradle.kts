@@ -71,5 +71,5 @@ dependencies {
 
     implementation(project(":lib_base"))
 
-    kapt(dependenciesConfig.AROUTER_COMPILER)
+    kapt(DependenciesConfig.AROUTER_COMPILER)
 }
