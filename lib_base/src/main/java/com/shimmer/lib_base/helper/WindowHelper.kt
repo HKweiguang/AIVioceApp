@@ -1,13 +1,14 @@
 package com.shimmer.lib_base.helper
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PixelFormat
 import android.os.Build
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
-import com.baidu.tts.f.n
 
+@SuppressLint("StaticFieldLeak")
 object WindowHelper {
 
     private lateinit var mContext: Context

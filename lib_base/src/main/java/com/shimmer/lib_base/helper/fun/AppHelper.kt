@@ -24,6 +24,9 @@ object AppHelper {
     // 所有应用
     private val mAllAppList = arrayListOf<AppData>()
 
+    //所有商店包名
+    private lateinit var mAllMarkArray: Array<String>
+
     //分页View
     val mAllViewList = ArrayList<View>()
 
@@ -33,6 +36,9 @@ object AppHelper {
         pm = this.context.packageManager
 
         loadAllApp()
+
+        // 加载商店包名
+        mAllMarkArray = context.resources.getStringArray(R.array.AppMarketArray)
     }
 
     /**
@@ -156,16 +162,39 @@ object AppHelper {
     private fun intentUnInstallApp(packageName: String) {
         val intent = Intent(Intent.ACTION_DELETE)
         intent.data = Uri.parse("package:$packageName")
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context.startActivity(intent)
+    }
+
+
+    /**
+     * 跳转应用商店
+     */
+    fun launcherAppStore(appName: String): Boolean {
+        mAllAppList.forEach {
+            // 如果你包含，说明安装了应用商店
+            if (mAllMarkArray.contains(it.packName)) {
+                if (mAllAppList.size > 0) {
+                    mAllAppList.forEach { data ->
+                        if (data.appName == appName) {
+                            intentAppStore(data.packName, data.packName)
+                            return true
+                        }
+                    }
+                }
+            }
+        }
+        return false
     }
 
     /**
      * 跳转应用商店
      */
-    fun intentAppStore(packageName: String, markPackageName: String) {
+    private fun intentAppStore(packageName: String, markPackageName: String) {
         val uri = Uri.parse("market://details?id=$packageName")
         val intent = Intent(Intent.ACTION_VIEW, uri)
         intent.setPackage(markPackageName)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         context.startActivity(intent)
     }
 }

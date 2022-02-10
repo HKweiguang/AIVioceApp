@@ -3,20 +3,19 @@ package com.shimmer.lib_voice.engine
 import android.util.Log
 import com.shimmer.lib_voice.impl.OnNluResultListener
 import com.shimmer.lib_voice.words.NluWords
-import org.json.JSONArray
 import org.json.JSONObject
 
 object VoiceEngineAnalyze {
 
     private val TAG = VoiceEngineAnalyze::class.java.simpleName
 
-    private lateinit var mOnNulResultListener: OnNluResultListener
+    private lateinit var mOnNluResultListener: OnNluResultListener
 
     /**
      * 分析结果
      */
     fun analyzeNlu(nlu: JSONObject, onNluResultListener: OnNluResultListener) {
-        this.mOnNulResultListener = onNluResultListener
+        this.mOnNluResultListener = onNluResultListener
 
         // 用户说的话
         val rawText = nlu.optString("raw_text")
@@ -24,8 +23,8 @@ object VoiceEngineAnalyze {
 
         val results = nlu.optJSONArray("results") ?: return
         val nluResultLength = results.length()
-        when  {
-            nluResultLength <=0 -> {
+        when {
+            nluResultLength <= 0 -> {
                 return
             }
             nluResultLength == 1 -> {
@@ -48,19 +47,37 @@ object VoiceEngineAnalyze {
 
         slots?.let {
             when (domain) {
-                NluWords.INTENT_OPEN_APP,
-                NluWords.INTENT_UNINSTALL_APP,
-                NluWords.INTENT_UPDATE_APP,
-                NluWords.INTENT_DOWNLOAD_APP,
-                NluWords.INTENT_SEARCH_APP,
-                NluWords.INTENT_RECOMMEND_APP -> {
-                    // 得到打开App的名称
-                    val userAppName = it.optJSONArray("user_app_name")
-                    userAppName?.let { appName ->
-                        if (appName.length() > 0) {
+                NluWords.NLU_APP -> {
+                    when (intent) {
+                        NluWords.INTENT_OPEN_APP,
+                        NluWords.INTENT_UNINSTALL_APP,
+                        NluWords.INTENT_UPDATE_APP,
+                        NluWords.INTENT_DOWNLOAD_APP,
+                        NluWords.INTENT_SEARCH_APP,
+                        NluWords.INTENT_RECOMMEND_APP -> {
+                            // 得到打开App的名称
+                            val userAppName = it.optJSONArray("user_app_name")
+                            userAppName?.let { appName ->
+                                if (appName.length() > 0) {
+                                    val obj = appName[0] as JSONObject
+                                    val word = obj.optString("word")
+                                    when (word) {
+                                        NluWords.INTENT_OPEN_APP -> mOnNluResultListener.openApp(
+                                            word
+                                        )
+                                        NluWords.INTENT_UNINSTALL_APP -> mOnNluResultListener.unInstallApp(
+                                            word
+                                        )
+                                        else -> mOnNluResultListener.otherApp(word)
+                                    }
 
-                        } else {
-
+                                } else {
+                                    mOnNluResultListener.nluError()
+                                }
+                            }
+                        }
+                        else -> {
+                            mOnNluResultListener.nluError()
                         }
                     }
                 }
@@ -68,7 +85,7 @@ object VoiceEngineAnalyze {
                     // 获取其他类型
                 }
                 else -> {
-
+                    mOnNluResultListener.nluError()
                 }
             }
         }

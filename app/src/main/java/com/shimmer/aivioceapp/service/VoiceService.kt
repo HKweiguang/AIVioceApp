@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -18,6 +19,7 @@ import com.shimmer.aivioceapp.entity.AppConstants
 import com.shimmer.lib_base.helper.NotificationHelper
 import com.shimmer.lib_base.helper.SoundPoolHelper
 import com.shimmer.lib_base.helper.WindowHelper
+import com.shimmer.lib_base.helper.`fun`.AppHelper
 import com.shimmer.lib_base.utils.L
 import com.shimmer.lib_voice.engine.VoiceEngineAnalyze
 import com.shimmer.lib_voice.impl.OnAsrResultListener
@@ -69,6 +71,10 @@ class VoiceService : Service(), OnNluResultListener {
         ivCloseWindow = mFullWindowView.findViewById<ImageView>(R.id.ivCloseWindow)
         tvVoiceTips = mFullWindowView.findViewById<TextView>(R.id.tvVoiceTips)
 
+        ivCloseWindow.setOnClickListener {
+            hideTouchWindow()
+        }
+
         mChatListView.layoutManager = LinearLayoutManager(this)
         mChatAdapter = ChatListAdapter(mList)
         mChatListView.adapter = mChatAdapter
@@ -85,7 +91,6 @@ class VoiceService : Service(), OnNluResultListener {
 
             override fun asrStopSpeak() {
                 L.i("结束说话")
-                hideWindow()
             }
 
             override fun wakeUpSuccess(result: JSONObject) {
@@ -131,9 +136,9 @@ class VoiceService : Service(), OnNluResultListener {
         upateTips("正在聆听...")
         SoundPoolHelper.play(R.raw.record_start)
         val wakeupWords = WordsTools.wakeupWords()
-        addAiText(wakeupWords)
-        VoiceManager.ttsStart(WordsTools.wakeupWords(), object : VoiceTTS.OnTTSResultListener{
+        addAiText(wakeupWords, object : VoiceTTS.OnTTSResultListener {
             override fun ttsEnd() {
+                //开启识别
                 VoiceManager.startAsr()
             }
         })
@@ -159,11 +164,60 @@ class VoiceService : Service(), OnNluResultListener {
         }, 2 * 1000)
     }
 
-    /**
-     * 查询天气
-     */
+    //直接隐藏窗口
+    private fun hideTouchWindow() {
+        L.i("======隐藏窗口======")
+        WindowHelper.hide(mFullWindowView)
+        mLottieView.pauseAnimation()
+        SoundPoolHelper.play(R.raw.record_over)
+        VoiceManager.stopAsr()
+    }
+
+    override fun openApp(appName: String) {
+        if (!TextUtils.isEmpty(appName)) {
+            L.i("Open App $appName")
+            val isOpen = AppHelper.launcherApp(appName)
+            if (isOpen) {
+                addAiText(getString(R.string.text_voice_app_open, appName))
+            } else {
+                addAiText(getString(R.string.text_voice_app_not_open, appName))
+            }
+        }
+        hideWindow()
+    }
+
+    override fun unInstallApp(appName: String) {
+        if (!TextUtils.isEmpty(appName)) {
+            L.i("unInstall App $appName")
+            val isUninstall = AppHelper.unInstallApp(appName)
+            if (isUninstall) {
+                addAiText(getString(R.string.text_voice_app_uninstall, appName))
+            } else {
+                addAiText(getString(R.string.text_voice_app_not_uninstall))
+            }
+        }
+        hideWindow()
+    }
+
+    override fun otherApp(appName: String) {
+        //全部跳转应用市场
+        if (!TextUtils.isEmpty(appName)) {
+            val isIntent = AppHelper.launcherAppStore(appName)
+            if (isIntent) {
+                addAiText(getString(R.string.text_voice_app_option, appName))
+            } else {
+                addAiText(WordsTools.noAnswerWords())
+            }
+        }
+        hideWindow()
+    }
+
     override fun queryWeather() {
 
+    }
+
+    override fun nluError() {
+        VoiceManager.ttsStart(WordsTools.noAnswerWords())
     }
 
     /**
