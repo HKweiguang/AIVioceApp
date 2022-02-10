@@ -56,9 +56,19 @@ object VoiceEngineAnalyze {
                 NluWords.INTENT_RECOMMEND_APP -> {
                     // 得到打开App的名称
                     val userAppName = it.optJSONArray("user_app_name")
+                    userAppName?.let { appName ->
+                        if (appName.length() > 0) {
+
+                        } else {
+
+                        }
+                    }
                 }
                 NluWords.NLU_WEATHER -> {
                     // 获取其他类型
+                }
+                else -> {
+
                 }
             }
         }
