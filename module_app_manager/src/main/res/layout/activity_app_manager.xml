@@ -15,10 +15,10 @@
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
-<!--        <com.imooc.lib_base.view.PointLayoutView-->
-<!--            android:id="@+id/mPointLayoutView"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="30dp" />-->
+        <com.shimmer.lib_base.view.PointLayoutView
+            android:id="@+id/mPointLayoutView"
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
     </LinearLayout>
 
     <LinearLayout

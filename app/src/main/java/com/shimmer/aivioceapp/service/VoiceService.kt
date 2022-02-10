@@ -48,7 +48,7 @@ class VoiceService : Service(), OnNluResultListener {
         L.i("语音服务启动")
         initCoreVoiceService()
 
-        showWindow()
+//        showWindow()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

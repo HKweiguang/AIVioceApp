@@ -22,9 +22,7 @@ object VoiceEngineAnalyze {
         val rawText = nlu.optString("raw_text")
         Log.i(TAG, "rawText: $rawText")
 
-        val results = nlu.optJSONArray("results")
-        results ?: return
-
+        val results = nlu.optJSONArray("results") ?: return
         val nluResultLength = results.length()
         when  {
             nluResultLength <=0 -> {
@@ -48,9 +46,20 @@ object VoiceEngineAnalyze {
         val intent = results.optString("intent")
         val slots = results.optJSONObject("slots")
 
-        when (domain) {
-            NluWords.NLU_WEATHER -> {
-                // 获取其他类型
+        slots?.let {
+            when (domain) {
+                NluWords.INTENT_OPEN_APP,
+                NluWords.INTENT_UNINSTALL_APP,
+                NluWords.INTENT_UPDATE_APP,
+                NluWords.INTENT_DOWNLOAD_APP,
+                NluWords.INTENT_SEARCH_APP,
+                NluWords.INTENT_RECOMMEND_APP -> {
+                    // 得到打开App的名称
+                    val userAppName = it.optJSONArray("user_app_name")
+                }
+                NluWords.NLU_WEATHER -> {
+                    // 获取其他类型
+                }
             }
         }
     }
