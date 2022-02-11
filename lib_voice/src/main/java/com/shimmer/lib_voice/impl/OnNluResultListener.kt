@@ -36,6 +36,14 @@ interface OnNluResultListener {
     //取消
     fun quit()
 
+    //=======================电话场景=======================
+
+    //拨打联系人
+    fun callPhoneForName(name: String)
+
+    //拨打电话
+    fun callPhoneForNumber(phone: String)
+
     /**
      * 查询天气
      */

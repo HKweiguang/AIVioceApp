@@ -13,6 +13,7 @@ import com.shimmer.aivioceapp.service.VoiceService
 import com.shimmer.lib_base.base.BaseActivity
 import com.shimmer.lib_base.base.adapter.BasePagerAdapter
 import com.shimmer.lib_base.helper.ARouterHelper
+import com.shimmer.lib_base.helper.`fun`.ContactHelper
 import com.zhy.magicviewpager.transformer.ScaleInTransformer
 
 class MainActivity : BaseActivity() {
@@ -133,6 +134,9 @@ class MainActivity : BaseActivity() {
      * 连接服务
      */
     private fun linkService() {
+
+        ContactHelper.initHelper(this)
+
         startService(Intent(this, VoiceService::class.java))
     }
 }

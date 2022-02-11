@@ -129,6 +129,37 @@ object VoiceEngineAnalyze {
                         mOnNluResultListener.nluError()
                     }
                 }
+                NluWords.NLU_TELEPHONE -> {
+                    if (NluWords.INTENT_CALL == intent) {
+                        when {
+                            slots.has("user_call_target") -> {
+                                val callTarget = slots.optJSONArray("user_call_target")
+                                callTarget?.let { target ->
+                                    if (target.length() > 0) {
+                                        val name = (target[0] as JSONObject).optString("word")
+                                        mOnNluResultListener.callPhoneForName(name)
+                                    } else {
+                                        mOnNluResultListener.nluError()
+                                    }
+                                }
+                            }
+                            slots.has("user_phone_number") -> {
+                                val phoneNumber = slots.optJSONArray("user_phone_number")
+                                phoneNumber?.let { number ->
+                                    if (number.length() > 0) {
+                                        val phone = (number[0] as JSONObject).optString("word")
+                                        mOnNluResultListener.callPhoneForNumber(phone)
+                                    } else {
+                                        mOnNluResultListener.nluError()
+                                    }
+                                }
+                            }
+                            else -> mOnNluResultListener.nluError()
+                        }
+                    } else {
+                        mOnNluResultListener.nluError()
+                    }
+                }
                 NluWords.NLU_WEATHER -> {
                     // 获取其他类型
                 }

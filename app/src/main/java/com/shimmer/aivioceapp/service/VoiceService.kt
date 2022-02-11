@@ -21,6 +21,7 @@ import com.shimmer.lib_base.helper.SoundPoolHelper
 import com.shimmer.lib_base.helper.WindowHelper
 import com.shimmer.lib_base.helper.`fun`.AppHelper
 import com.shimmer.lib_base.helper.`fun`.CommonSettingHelper
+import com.shimmer.lib_base.helper.`fun`.ContactHelper
 import com.shimmer.lib_base.utils.L
 import com.shimmer.lib_voice.engine.VoiceEngineAnalyze
 import com.shimmer.lib_voice.impl.OnAsrResultListener
@@ -243,6 +244,31 @@ class VoiceService : Service(), OnNluResultListener {
                 hideTouchWindow()
             }
         })
+    }
+
+    override fun callPhoneForName(name: String) {
+        val list = ContactHelper.mContactList.filter { it.phoneName == name }
+        if (list.isNotEmpty()) {
+            addAiText(
+                getString(R.string.text_voice_call, name),
+                object : VoiceTTS.OnTTSResultListener {
+                    override fun ttsEnd() {
+                        ContactHelper.callPhone(list[0].phoneNumber)
+                    }
+                })
+        } else {
+            addAiText(getString(R.string.text_voice_no_friend))
+        }
+        hideWindow()
+    }
+
+    override fun callPhoneForNumber(phone: String) {
+        addAiText(getString(R.string.text_voice_call), object : VoiceTTS.OnTTSResultListener {
+            override fun ttsEnd() {
+                ContactHelper.callPhone(phone)
+            }
+        })
+        hideWindow()
     }
 
     override fun queryWeather() {
