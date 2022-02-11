@@ -67,4 +67,10 @@ dependencies {
     api(DependenciesConfig.VIEWPAGER)
     //Lottie
     api(DependenciesConfig.LOTTIE)
+    //刷新
+    api(DependenciesConfig.REFRESH_KERNEL)
+    api(DependenciesConfig.REFRESH_HEADER)
+    api(DependenciesConfig.REFRESH_FOOT)
+    //图表
+//    api(DependenciesConfig.CHART)
 }

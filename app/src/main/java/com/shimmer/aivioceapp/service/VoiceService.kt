@@ -16,6 +16,7 @@ import com.shimmer.aivioceapp.R
 import com.shimmer.aivioceapp.adapter.ChatListAdapter
 import com.shimmer.aivioceapp.data.ChatList
 import com.shimmer.aivioceapp.entity.AppConstants
+import com.shimmer.lib_base.helper.ARouterHelper
 import com.shimmer.lib_base.helper.NotificationHelper
 import com.shimmer.lib_base.helper.SoundPoolHelper
 import com.shimmer.lib_base.helper.WindowHelper
@@ -23,6 +24,8 @@ import com.shimmer.lib_base.helper.`fun`.AppHelper
 import com.shimmer.lib_base.helper.`fun`.CommonSettingHelper
 import com.shimmer.lib_base.helper.`fun`.ContactHelper
 import com.shimmer.lib_base.utils.L
+import com.shimmer.lib_network.HttpManager
+import com.shimmer.lib_network.bean.JokeOneData
 import com.shimmer.lib_voice.engine.VoiceEngineAnalyze
 import com.shimmer.lib_voice.impl.OnAsrResultListener
 import com.shimmer.lib_voice.impl.OnNluResultListener
@@ -30,6 +33,9 @@ import com.shimmer.lib_voice.manager.VoiceManager
 import com.shimmer.lib_voice.tts.VoiceTTS
 import com.shimmer.lib_voice.words.WordsTools
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class VoiceService : Service(), OnNluResultListener {
 
@@ -271,6 +277,42 @@ class VoiceService : Service(), OnNluResultListener {
         hideWindow()
     }
 
+    override fun playJoke() {
+        HttpManager.queryJoke(object : Callback<JokeOneData>{
+            override fun onResponse(call: Call<JokeOneData>, response: Response<JokeOneData>) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        if (it.error_code == 0) {
+                            val index = WordsTools.randomInt(it.result.size)
+                            if (index <= it.result.size) {
+                                val data = it.result[index]
+                                addAiText(data.content, object : VoiceTTS.OnTTSResultListener {
+                                    override fun ttsEnd() {
+                                        hideWindow()
+                                    }
+                                })
+                            }
+                        } else {
+                            jokeError()
+                        }
+                    }
+                } else {
+                    jokeError()
+                }
+            }
+
+            override fun onFailure(call: Call<JokeOneData>, t: Throwable) {
+                jokeError()
+            }
+        })
+    }
+
+    override fun jokeList() {
+        addAiText(getString(R.string.text_voice_query_joke))
+        ARouterHelper.startActivity(ARouterHelper.PATH_JOKE)
+        hideWindow()
+    }
+
     override fun queryWeather() {
 
     }
@@ -319,5 +361,13 @@ class VoiceService : Service(), OnNluResultListener {
      */
     private fun upateTips(text: String) {
         tvVoiceTips.text = text
+    }
+
+    /**
+     * 笑话错误
+     */
+    private fun jokeError() {
+        hideWindow()
+        addAiText(getString(R.string.text_voice_query_joke_error))
     }
 }

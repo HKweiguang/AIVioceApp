@@ -160,6 +160,26 @@ object VoiceEngineAnalyze {
                         mOnNluResultListener.nluError()
                     }
                 }
+                NluWords.NLU_JOKE -> {
+                    if (NluWords.INTENT_TELL_JOKE == intent) {
+                        mOnNluResultListener.playJoke()
+                    } else {
+                        mOnNluResultListener.jokeList()
+                    }
+                }
+                NluWords.NLU_SEARCH, NluWords.NLU_NOVEL -> {
+                    when {
+                        NluWords.INTENT_SEARCH == intent -> {
+                            mOnNluResultListener.playJoke()
+                        }
+                        NluWords.INTENT_SEARCH_NOVEL == intent -> {
+                            mOnNluResultListener.playJoke()
+                        }
+                        else -> {
+                            mOnNluResultListener.nluError()
+                        }
+                    }
+                }
                 NluWords.NLU_WEATHER -> {
                     // 获取其他类型
                 }
