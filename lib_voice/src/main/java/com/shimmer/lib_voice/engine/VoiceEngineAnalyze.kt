@@ -27,12 +27,11 @@ object VoiceEngineAnalyze {
             nluResultLength <= 0 -> {
                 return
             }
-            nluResultLength == 1 -> {
-                // 单条命中
-                analyzeNluSingle(results[0] as JSONObject)
-            }
+            // 单条命中
+//            nluResultLength == 1 -> analyzeNluSingle(results[0] as JSONObject)
             else -> {
                 // 多条命中
+                analyzeNluSingle(results[0] as JSONObject)
             }
         }
     }
@@ -76,18 +75,67 @@ object VoiceEngineAnalyze {
                                 }
                             }
                         }
-                        else -> {
-                            mOnNluResultListener.nluError()
+                        else -> mOnNluResultListener.nluError()
+                    }
+                }
+                NluWords.NLU_INSTRUCTION -> {
+                    when (intent) {
+                        NluWords.INTENT_RETURN -> mOnNluResultListener.back()
+                        NluWords.INTENT_BACK_HOME -> mOnNluResultListener.home()
+                        NluWords.INTENT_VOLUME_UP -> mOnNluResultListener.setVolumeUp()
+                        NluWords.INTENT_VOLUME_DOWN -> mOnNluResultListener.setVolumeDown()
+                        else -> mOnNluResultListener.nluError()
+                    }
+                }
+                NluWords.NLU_MOVIE -> {
+                    if (NluWords.INTENT_MOVIE_VOL == intent) {
+                        val userD = slots.optJSONArray("user_d")
+                        userD?.let { user ->
+                            if (user.length() > 0) {
+                                val word = (user[0] as JSONObject).optString("word")
+                                when (word) {
+                                    "大点" -> {
+                                        mOnNluResultListener.setVolumeUp()
+                                    }
+                                    "小点" -> {
+                                        mOnNluResultListener.setVolumeDown()
+                                    }
+                                    else -> mOnNluResultListener.nluError()
+                                }
+                            } else {
+                                mOnNluResultListener.nluError()
+                            }
                         }
+                    } else {
+                        mOnNluResultListener.nluError()
+                    }
+                }
+                NluWords.NLU_ROBOT -> {
+                    if (NluWords.INTENT_MOVIE_VOL == intent) {
+                        val volumeControl = slots.optJSONArray("user_volume_control")
+                        volumeControl?.let { control ->
+                            val word = (control[0] as JSONObject).optString("word")
+                            when (word) {
+                                "大点" -> {
+                                    mOnNluResultListener.setVolumeUp()
+                                }
+                                "小点" -> {
+                                    mOnNluResultListener.setVolumeDown()
+                                }
+                                else -> mOnNluResultListener.nluError()
+                            }
+                        }
+                    } else {
+                        mOnNluResultListener.nluError()
                     }
                 }
                 NluWords.NLU_WEATHER -> {
                     // 获取其他类型
                 }
-                else -> {
-                    mOnNluResultListener.nluError()
-                }
+                else -> mOnNluResultListener.nluError()
             }
+
+            it
         }
     }
 }

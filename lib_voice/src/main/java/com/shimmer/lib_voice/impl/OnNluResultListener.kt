@@ -19,6 +19,23 @@ interface OnNluResultListener {
      */
     fun otherApp(appName: String)
 
+    //=======================通用设置=======================
+
+    //返回
+    fun back()
+
+    //主页
+    fun home()
+
+    //音量+
+    fun setVolumeUp()
+
+    //音量-
+    fun setVolumeDown()
+
+    //取消
+    fun quit()
+
     /**
      * 查询天气
      */

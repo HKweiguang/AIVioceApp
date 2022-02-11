@@ -20,6 +20,7 @@ import com.shimmer.lib_base.helper.NotificationHelper
 import com.shimmer.lib_base.helper.SoundPoolHelper
 import com.shimmer.lib_base.helper.WindowHelper
 import com.shimmer.lib_base.helper.`fun`.AppHelper
+import com.shimmer.lib_base.helper.`fun`.CommonSettingHelper
 import com.shimmer.lib_base.utils.L
 import com.shimmer.lib_voice.engine.VoiceEngineAnalyze
 import com.shimmer.lib_voice.impl.OnAsrResultListener
@@ -49,8 +50,6 @@ class VoiceService : Service(), OnNluResultListener {
         super.onCreate()
         L.i("语音服务启动")
         initCoreVoiceService()
-
-//        showWindow()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -164,7 +163,9 @@ class VoiceService : Service(), OnNluResultListener {
         }, 2 * 1000)
     }
 
-    //直接隐藏窗口
+    /**
+     * 直接隐藏窗口
+     */
     private fun hideTouchWindow() {
         L.i("======隐藏窗口======")
         WindowHelper.hide(mFullWindowView)
@@ -212,12 +213,45 @@ class VoiceService : Service(), OnNluResultListener {
         hideWindow()
     }
 
+    override fun back() {
+        addAiText(getString(R.string.text_voice_back_text))
+        CommonSettingHelper.back()
+        hideWindow()
+    }
+
+    override fun home() {
+        addAiText(getString(R.string.text_voice_home_text))
+        CommonSettingHelper.home()
+        hideWindow()
+    }
+
+    override fun setVolumeUp() {
+        addAiText(getString(R.string.text_voice_volume_add))
+        CommonSettingHelper.setVolumeUp()
+        hideWindow()
+    }
+
+    override fun setVolumeDown() {
+        addAiText(getString(R.string.text_voice_volume_sub))
+        CommonSettingHelper.setVolumeDown()
+        hideWindow()
+    }
+
+    override fun quit() {
+        addAiText(WordsTools.quitWords(), object : VoiceTTS.OnTTSResultListener {
+            override fun ttsEnd() {
+                hideTouchWindow()
+            }
+        })
+    }
+
     override fun queryWeather() {
 
     }
 
     override fun nluError() {
         VoiceManager.ttsStart(WordsTools.noAnswerWords())
+        hideWindow()
     }
 
     /**
