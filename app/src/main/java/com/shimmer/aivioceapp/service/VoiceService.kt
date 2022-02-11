@@ -313,8 +313,32 @@ class VoiceService : Service(), OnNluResultListener {
         hideWindow()
     }
 
-    override fun queryWeather() {
+    override fun conTellTime(name: String) {
+        TODO("Not yet implemented")
+    }
 
+    override fun conTellInfo(name: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun aiRobot(text: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun queryWeather(city: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun queryWeatherInfo(city: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun nearByMap(poi: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun routeMap(address: String) {
+        TODO("Not yet implemented")
     }
 
     override fun nluError() {

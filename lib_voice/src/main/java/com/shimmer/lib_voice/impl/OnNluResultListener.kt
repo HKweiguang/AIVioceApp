@@ -52,10 +52,34 @@ interface OnNluResultListener {
     //笑话列表
     fun jokeList()
 
-    /**
-     * 查询天气
-     */
-    fun queryWeather()
+    //=======================星座=======================
+
+    //星座时间
+    fun conTellTime(name: String)
+
+    //星座详情
+    fun conTellInfo(name: String)
+
+    //=======================机器人=======================
+
+    //机器人
+    fun aiRobot(text: String)
+
+    //=======================天气=======================
+
+    //查询天气
+    fun queryWeather(city: String)
+
+    //查询天气详情
+    fun queryWeatherInfo(city: String)
+
+    //=======================地图=======================
+
+    //周边搜索
+    fun nearByMap(poi: String)
+
+    //规划 - 导航
+    fun routeMap(address: String)
 
     //=======================其他=======================
 

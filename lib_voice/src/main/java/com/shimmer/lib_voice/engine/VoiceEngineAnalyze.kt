@@ -24,9 +24,8 @@ object VoiceEngineAnalyze {
         val results = nlu.optJSONArray("results") ?: return
         val nluResultLength = results.length()
         when {
-            nluResultLength <= 0 -> {
-                return
-            }
+            nluResultLength <= 0 -> mOnNluResultListener.aiRobot(rawText)
+
             // 单条命中
 //            nluResultLength == 1 -> analyzeNluSingle(results[0] as JSONObject)
             else -> {
@@ -180,8 +179,29 @@ object VoiceEngineAnalyze {
                         }
                     }
                 }
+                NluWords.NLU_CONSTELL -> {
+                    val consTellNameArray = slots.optJSONArray("user_constell_name")
+                    consTellNameArray?.let { consTell ->
+                        if (consTell.length() > 0) {
+                            val wordObject = consTell[0] as JSONObject
+                            val word = wordObject.optString("word")
+                            when (intent) {
+                                NluWords.INTENT_CONSTELL_TIME -> mOnNluResultListener.conTellTime(
+                                    word
+                                )
+                                NluWords.INTENT_CONSTELL_INFO -> mOnNluResultListener.conTellInfo(
+                                    word
+                                )
+                                else -> mOnNluResultListener.nluError()
+                            }
+                        }
+                    }
+                }
                 NluWords.NLU_WEATHER -> {
-                    // 获取其他类型
+
+                }
+                NluWords.NLU_MAP -> {
+
                 }
                 else -> mOnNluResultListener.nluError()
             }
