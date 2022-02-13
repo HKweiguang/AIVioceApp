@@ -34,7 +34,9 @@
     <!-- 获取摄像头权限，用于AR步行导航 -->
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <application>
+    <application
+        android:usesCleartextTraffic="true"
+        tools:ignore="UnusedAttribute">
 
         <uses-library
             android:name="org.apache.http.legacy"

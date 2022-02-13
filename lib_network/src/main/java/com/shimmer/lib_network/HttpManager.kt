@@ -2,13 +2,12 @@ package com.shimmer.lib_network
 
 import com.shimmer.lib_network.bean.JokeListData
 import com.shimmer.lib_network.bean.JokeOneData
+import com.shimmer.lib_network.bean.WeatherData
 import com.shimmer.lib_network.http.HttpKey
 import com.shimmer.lib_network.http.HttpUrl
 import com.shimmer.lib_network.impl.HttpImplService
 import com.shimmer.lib_network.interceptor.HttpInterceptor
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
-import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -67,8 +66,8 @@ object HttpManager {
         retrofitWeather.create(HttpImplService::class.java)
     }
 
-    fun queryWeather(city: String): Call<ResponseBody> {
-        return apiWeather.getWeather(city, HttpKey.WEATHER_KEY)
+    fun queryWeather(city: String, callback: Callback<WeatherData>) {
+        apiWeather.getWeather(city, HttpKey.WEATHER_KEY).enqueue(callback)
     }
 
     //============================天气============================

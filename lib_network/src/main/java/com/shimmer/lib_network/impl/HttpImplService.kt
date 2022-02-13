@@ -64,5 +64,5 @@ interface HttpImplService {
     fun getWeather(
         @Query("city") city: String,
         @Query("key") key: String,
-    ): Call<ResponseBody>
+    ): Call<WeatherData>
 }

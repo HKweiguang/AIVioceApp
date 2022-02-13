@@ -26,6 +26,7 @@ import com.shimmer.lib_base.helper.`fun`.ContactHelper
 import com.shimmer.lib_base.utils.L
 import com.shimmer.lib_network.HttpManager
 import com.shimmer.lib_network.bean.JokeOneData
+import com.shimmer.lib_network.bean.WeatherData
 import com.shimmer.lib_voice.engine.VoiceEngineAnalyze
 import com.shimmer.lib_voice.impl.OnAsrResultListener
 import com.shimmer.lib_voice.impl.OnNluResultListener
@@ -326,11 +327,41 @@ class VoiceService : Service(), OnNluResultListener {
     }
 
     override fun queryWeather(city: String) {
-        TODO("Not yet implemented")
+        HttpManager.run {
+            queryWeather(city, object : Callback<WeatherData> {
+                override fun onFailure(call: Call<WeatherData>, t: Throwable) {
+                    addAiText(getString(R.string.text_voice_query_weather_error, city))
+                    hideWindow()
+                }
+
+                override fun onResponse(call: Call<WeatherData>, response: Response<WeatherData>) {
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            it.result.realtime.apply {
+                                //在UI上显示
+                                addWeather(
+                                    city,
+                                    wid,
+                                    info,
+                                    temperature,
+                                    object : VoiceTTS.OnTTSResultListener {
+                                        override fun ttsEnd() {
+                                            hideWindow()
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+            })
+        }
     }
 
     override fun queryWeatherInfo(city: String) {
-        TODO("Not yet implemented")
+        addAiText(getString(R.string.text_voice_query_weather, city))
+        ARouterHelper.startActivity(ARouterHelper.PATH_WEATHER, "city", city)
+        hideWindow()
     }
 
     override fun nearByMap(poi: String) {
@@ -378,6 +409,26 @@ class VoiceService : Service(), OnNluResultListener {
     private fun baseAddItem(bean: ChatList) {
         mList.add(bean)
         mChatAdapter.notifyItemInserted(mList.size - 1)
+    }
+
+    /**
+     * 添加天气
+     */
+    private fun addWeather(
+        city: String,
+        wid: String,
+        info: String,
+        temperature: String,
+        mOnTTSResultListener: VoiceTTS.OnTTSResultListener
+    ) {
+        val bean = ChatList(AppConstants.TYPE_AI_WEATHER)
+        bean.city = city
+        bean.wid = wid
+        bean.info = info
+        bean.temperature = "$temperature°"
+        baseAddItem(bean)
+        val text = city + "今天天气" + info + temperature + "°"
+        VoiceManager.ttsStart(text, mOnTTSResultListener)
     }
 
     /**
