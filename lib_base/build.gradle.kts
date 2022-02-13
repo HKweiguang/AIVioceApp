@@ -72,5 +72,5 @@ dependencies {
     api(DependenciesConfig.REFRESH_HEADER)
     api(DependenciesConfig.REFRESH_FOOT)
     //图表
-//    api(DependenciesConfig.CHART)
+    api(DependenciesConfig.CHART)
 }
