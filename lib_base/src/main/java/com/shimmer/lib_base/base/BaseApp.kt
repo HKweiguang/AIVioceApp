@@ -6,6 +6,7 @@ import com.shimmer.lib_base.helper.NotificationHelper
 import com.shimmer.lib_base.helper.SoundPoolHelper
 import com.shimmer.lib_base.helper.`fun`.AppHelper
 import com.shimmer.lib_base.helper.`fun`.CommonSettingHelper
+import com.shimmer.lib_base.utils.AssetsUtils
 import com.shimmer.lib_base.utils.SpUtils
 import com.shimmer.lib_voice.words.WordsTools
 
@@ -22,5 +23,6 @@ open class BaseApp : Application() {
         SoundPoolHelper.init(this)
         AppHelper.initHelper(this)
         CommonSettingHelper.initHelper(this)
+        AssetsUtils.initUtils(this)
     }
 }

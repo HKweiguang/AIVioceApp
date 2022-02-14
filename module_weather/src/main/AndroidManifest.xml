@@ -5,5 +5,6 @@
     <application android:allowBackup="false"
         android:icon="@mipmap/ic_launcher">
         <activity android:name=".WeatherActivity" />
+        <activity android:name=".ui.CitySelectActivity" />
     </application>
 </manifest>

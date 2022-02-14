@@ -1,7 +1,11 @@
 package com.shimmer.module_weather
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.text.TextUtils
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -15,9 +19,11 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.shimmer.lib_base.base.BaseActivity
 import com.shimmer.lib_base.helper.ARouterHelper
+import com.shimmer.lib_base.utils.SpUtils
 import com.shimmer.lib_network.HttpManager
 import com.shimmer.lib_network.bean.WeatherData
 import com.shimmer.module_weather.tools.WeatherIconTools
+import com.shimmer.module_weather.ui.CitySelectActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,6 +33,9 @@ class WeatherActivity : BaseActivity() {
 
     //当前城市
     private var currentCity = "北京"
+
+    //跳转
+    private val codeSelect = 100
 
     override fun getLayoutId() = R.layout.activity_weather
 
@@ -47,9 +56,18 @@ class WeatherActivity : BaseActivity() {
         intent.run {
             val city = getStringExtra("city")
             if (!TextUtils.isEmpty(city)) {
-                currentCity = city!!
+                loadWeatherData(city!!)
+            } else {
+                startCitySelectActivity()
             }
         }
+    }
+
+    //加载天气数据
+    private fun loadWeatherData(city: String) {
+        currentCity = city
+        SpUtils.putString("city", currentCity)
+
         initChart()
         loadWeather()
     }
@@ -202,6 +220,40 @@ class WeatherActivity : BaseActivity() {
             // 页眉
             val legend = mLineChart.legend
             legend.form = Legend.LegendForm.LINE
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.city_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menu_setting) {
+            startCitySelectActivity()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    /**
+     * 跳转
+     */
+    private fun startCitySelectActivity() {
+        val intent = Intent(this, CitySelectActivity::class.java)
+        startActivityForResult(intent, codeSelect)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == codeSelect) {
+                data?.let {
+                    val city = it.getStringExtra("city")
+                    if (!TextUtils.isEmpty(city)) {
+                        loadWeatherData(city!!)
+                    }
+                }
+            }
         }
     }
 }
