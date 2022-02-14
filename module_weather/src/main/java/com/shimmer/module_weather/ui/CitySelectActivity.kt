@@ -76,6 +76,7 @@ class CitySelectActivity : BaseActivity() {
 
                 override fun getItemType(position: Int) = mList[position].type
             })
+        mCityListView.adapter = mCitySelectAdapter
     }
 
     /**

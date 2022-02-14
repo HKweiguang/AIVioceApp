@@ -3,6 +3,7 @@ package com.shimmer.module_weather
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.DashPathEffect
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
@@ -80,7 +81,7 @@ class WeatherActivity : BaseActivity() {
         supportActionBar?.title = currentCity
 
         HttpManager.run {
-            queryWeather(currentCity, object : Callback<WeatherData>{
+            queryWeather(currentCity, object : Callback<WeatherData> {
                 override fun onResponse(call: Call<WeatherData>, response: Response<WeatherData>) {
                     if (response.isSuccessful) {
                         response.body()?.let {
@@ -142,7 +143,11 @@ class WeatherActivity : BaseActivity() {
                 }
 
                 override fun onFailure(call: Call<WeatherData>, t: Throwable) {
-                    Toast.makeText(this@WeatherActivity, getString(R.string.text_load_fail), Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this@WeatherActivity,
+                        getString(R.string.text_load_fail),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             })
         }
@@ -167,7 +172,7 @@ class WeatherActivity : BaseActivity() {
         mLineChart.setPinchZoom(true)
 
         // 平均线
-        val limitLine = LimitLine(10f, "标记")
+        val limitLine = LimitLine(10f, "")
         limitLine.lineWidth = 4f
         limitLine.enableDashedLine(10f, 10f, 0f)
         limitLine.labelPosition = LimitLine.LimitLabelPosition.RIGHT_BOTTOM
@@ -189,15 +194,15 @@ class WeatherActivity : BaseActivity() {
     /**
      * 设置图表数据
      */
-    private fun setLineChartData(data: ArrayList<Entry>) {
+    private fun setLineChartData(values: ArrayList<Entry>) {
         if (mLineChart.data != null && mLineChart.data.dataSetCount > 0) {
             // 获取数据容器
             val set = mLineChart.data.getDataSetByIndex(0) as LineDataSet
-            set.values = data
+            set.values = values
             mLineChart.data.notifyDataChanged()
             mLineChart.notifyDataSetChanged()
         } else {
-            val set = LineDataSet(data, getString(R.string.text_chart_tips_text,currentCity))
+            val set = LineDataSet(values, getString(R.string.text_chart_tips_text, currentCity))
 
             set.enableDashedLine(10f, 10f, 0f)
             set.setCircleColor(Color.BLACK)
@@ -205,22 +210,27 @@ class WeatherActivity : BaseActivity() {
             set.circleRadius = 3f
             set.setDrawCircleHole(false)
             set.valueTextSize = 10f
+            set.formLineWidth = 1f
+            set.setDrawFilled(true)
+            set.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
+            set.formSize = 15f
+
             set.fillColor = Color.YELLOW
 
             // 设置数据
             val dataset = ArrayList<LineDataSet>()
             dataset.add(set)
-            val datas = LineData(dataset as List<ILineDataSet>?)
-            mLineChart.data = datas
-
-            // x轴动画
-            mLineChart.animateX(2000)
-            // 刷新
-            mLineChart.invalidate()
-            // 页眉
-            val legend = mLineChart.legend
-            legend.form = Legend.LegendForm.LINE
+            val data = LineData(dataset as List<ILineDataSet>?)
+            mLineChart.data = data
         }
+
+        // X轴动画
+        mLineChart.animateX(2000)
+        // 刷新
+        mLineChart.invalidate()
+        // 页眉
+        val legend = mLineChart.legend
+        legend.form = Legend.LegendForm.LINE
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

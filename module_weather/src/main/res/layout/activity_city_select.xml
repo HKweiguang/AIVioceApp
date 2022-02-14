@@ -8,13 +8,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-<!--    <com.imooc.module_weather.view.CitySelectView-->
-<!--        android:id="@+id/mCitySelectView"-->
-<!--        android:layout_width="50dp"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_alignParentEnd="true"-->
-<!--        android:clickable="true"-->
-<!--        android:focusable="true" />-->
+    <com.shimmer.module_weather.view.CitySelectView
+        android:id="@+id/mCitySelectView"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:clickable="true"
+        android:focusable="true" />
 
     <TextView
         android:id="@+id/mShowCity"
